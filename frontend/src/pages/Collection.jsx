@@ -38,24 +38,31 @@ const Collection = () => {
     if(subCategory.length >0) {
       productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
     }
-
-    setFilterProducts(productsCopy)
-  }
-
-  const sortProduct = () => {
-    let fpCopy = filterProducts.slice();
-    switch (sortType) {
-      case 'low-high' :
-        setFilterProducts(fpCopy.sort((a,b)=>(a.price - b.price)));
-        break;
-      case 'high-low' :
-        setFilterProducts(fpCopy.sort((a,b)=>(b.price - a.price)));
-        break;
-      default:
-        applyFilter();
-        break;
+    // Apply current sort
+    if(sortType === 'low-high'){
+      productsCopy.sort((a,b) => a.price - b.price);
     }
+    else if(sortType === 'high-low'){
+      productsCopy.sort((a,b) => b.price - a.price);
+    }
+
+    setFilterProducts(productsCopy);
   }
+
+  // const sortProduct = () => {
+  //   let fpCopy = filterProducts.slice();
+  //   switch (sortType) {
+  //     case 'low-high' :
+  //       setFilterProducts(fpCopy.sort((a,b)=>(a.price - b.price)));
+  //       break;
+  //     case 'high-low' :
+  //       setFilterProducts(fpCopy.sort((a,b)=>(b.price - a.price)));
+  //       break;
+  //     default:
+  //       applyFilter();
+  //       break;
+  //   }
+  // }
 
   // useEffect(()=>{
   //   setFilterProducts(products);
@@ -63,11 +70,11 @@ const Collection = () => {
 
   useEffect(()=>{
     applyFilter();
-  },[category,subCategory])
+  },[category,subCategory,sortType,products])
 
-  useEffect(()=>{
-    sortProduct();
-  },[sortType])
+  // useEffect(()=>{
+  //   sortProduct();
+  // },[sortType])
 
   useEffect(()=>{
     console.log(category);
