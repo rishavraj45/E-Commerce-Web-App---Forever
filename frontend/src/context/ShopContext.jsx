@@ -49,10 +49,17 @@ const ShopContextProvider = (props) => {
         return totalCount;
     }
 
+    // update quantity on clicking bin icon on cart page 
+    const updateQuantity = async (itemId,size,quantity) => {
+        let cartData = structuredClone(cartItems);
+        cartData[itemId][size] = quantity;
+        setCartItems(cartData);
+    }
+
     const value = {
         products , currency , delievery_fee ,
         search , setSearch , showSearch , setShowSearch,
-        cartItems, addToCart, getCartCount
+        cartItems, addToCart, getCartCount, updateQuantity
     }
     return (
         <ShopContext.Provider value={value}>
