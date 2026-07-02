@@ -1,4 +1,5 @@
 import { cloudinary } from "../config/cloudinary.js";
+import productModel from "../models/productModel.js"
 
 // function for add product
 const addProduct = async (req,res) => {
@@ -19,13 +20,34 @@ const addProduct = async (req,res) => {
             })
         )
 
-        console.log(name,description,price,category,subCategory, sizes, bestseller)
+        // console.log(name,description,price,category,subCategory, sizes, bestseller)
         // console.log(image1,image2,image3,image4)
         // console.log(images)
-        console.log(imagesUrl)
+        // console.log(imagesUrl)
+
+        // to store these data in mongoDB
+        const productData = {
+            name,
+            description,
+            category,
+            price: Number(price),
+            subCategory,
+            bestseller : bestseller === "true" ? true: false,
+            sizes: JSON.parse(sizes),
+            //converting size from string to array
+            image: imagesUrl,
+            date: Date.now()
+        }
+        console.log(productData);
+
+        const product = new productModel(productData);
+        await product.save()
+        // now product will be saved in mongoDB database=> can check in products on mongoDB cluster
+        // now we'll make authentication on this route so only admin could add product using the admin mail and password
 
         res.json({
             success: true,
+            message: "Product Added",
             imagesUrl,
         });
 
